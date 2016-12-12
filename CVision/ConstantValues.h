@@ -20,7 +20,7 @@ const auto BASE_SIGMA = .5;
 const auto SIGMA = 1.6;
 
 //#3
-const auto POINTS_LIMIT = 500;
+const auto POINTS_LIMIT = 200;
 const auto MORAVEC_SHIFT = 2;
 const auto HARRIS_SIGMA = 1;
 const auto LOCAL_MAXIMUMS_SHIFT = 2;

@@ -21,6 +21,8 @@ void scalePyramid(const QString &source, const QString &resultFolder) {
 void interestingPoints(const QString &source, const QString &resultFolder)
 {
 	const auto image = Image::fromQImage(QImage(source));
+	const auto moravecPoints = image.moravec(MORAVEC_SHIFT).getLocalMaximums(LOCAL_MAXIMUMS_SHIFT, LOCAL_MAXIMUMS_TRESHOLD);
+	image.toQImageWithPoints(image.nonMaxSuppression(moravecPoints, POINTS_LIMIT, NONMAX_FILTER_VALUE)).save(resultFolder + "/moravec.jpg");
 	const auto harrisPoints = image.harris(HARRIS_SIGMA).getLocalMaximums(LOCAL_MAXIMUMS_SHIFT, LOCAL_MAXIMUMS_TRESHOLD);
 	image.toQImageWithPoints(image.nonMaxSuppression(harrisPoints, POINTS_LIMIT, NONMAX_FILTER_VALUE)).save(resultFolder + "/harris.jpg");
 }
@@ -50,17 +52,17 @@ void descriptors(const QString &source,
 	finalResult.save(resultPath);
 }
 
-int main(int argc, char *argv[])
+int main()
 {
-	////#1
-	//sobel(SOURCE, RESULT_SOBEL);
-	////#2
-	//scalePyramid(SOURCE, RESULT_PYRAMID_FOLDER);
+	//#1
+	sobel(SOURCE, RESULT_SOBEL);
+	//#2
+	scalePyramid(SOURCE, RESULT_PYRAMID_FOLDER);
 	//#3
 	interestingPoints(SOURCE, RESULT_INTERESTING_FOLDER);
-	////#4
-	//descriptors(SOURCE, SOURCE_MODIFIED_BASIC, RESULT_DESCRIPTORS_BASIC, DescriptorTaskBasic());
-	////#5
-	//descriptors(SOURCE, SOURCE_MODIFIED_ROTATION, RESULT_DESCRIPTORS_ROTATE_INVARIANT, DescriptorTaskRotateInvariant(), MINDISTANCE_TRESHOLD);
+	//#4
+	descriptors(SOURCE, SOURCE_MODIFIED_BASIC, RESULT_DESCRIPTORS_BASIC, DescriptorTaskBasic());
+	//#5
+	descriptors(SOURCE, SOURCE_MODIFIED_ROTATION, RESULT_DESCRIPTORS_ROTATE_INVARIANT, DescriptorTaskRotateInvariant(), MINDISTANCE_TRESHOLD);
 	return 0;
 }
